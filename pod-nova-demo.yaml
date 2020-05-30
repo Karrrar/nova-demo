@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nova-demo
+  labels:
+    name: nova-demo
+    app: nova-demo
+spec:
+  containers:
+    - name: nova-demo
+      image: nova-demo
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 3000
