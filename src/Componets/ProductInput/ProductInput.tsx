@@ -26,12 +26,10 @@ export default function ProductInput() {
               <input
                 type="text"
                 name="productName"
-                id="productName"
                 className="form-contorl"
                 placeholder="Product Name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
                 data-testid="productName"
+                {...formik.getFieldProps("productName")}
               />
               {formik.touched.productName && formik.errors.productName ? (
                 <div>{formik.errors.productName}</div>
