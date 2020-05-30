@@ -1,84 +1,161 @@
 import React from "react";
-import { useFormik, FormikBag } from "formik";
+import {
+  useFormik,
+  Formik,
+  Field,
+  Form,
+  ErrorMessage,
+  FieldArray,
+} from "formik";
 import * as Yup from "yup";
 
 export default function ProductInput() {
-  const formik = useFormik({
-    initialValues: {
-      productName: "",
-      productNumber: "",
-    },
-    validationSchema: Yup.object({
-      productName: Yup.string()
-        .required("Product Name is Required")
-        .min(3, "Product Name must be 3 characters or more"),
-    }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit} data-testid="product-input-form">
-        <div className="form-group">
-          <div className="row">
-            <div className="col">
-              <input
-                type="text"
-                name="productName"
-                className="form-contorl"
-                placeholder="Product Name"
-                data-testid="productName"
-                {...formik.getFieldProps("productName")}
-              />
-              {formik.touched.productName && formik.errors.productName ? (
-                <div>{formik.errors.productName}</div>
-              ) : null}
+    <Formik
+      initialValues={{
+        productName: "",
+        productNumber: "",
+        productDescription: "",
+        batchNumbers: [],
+      }}
+      validationSchema={Yup.object({
+        productName: Yup.string()
+          .required("Product Name is Required")
+          .min(3, "Product Name must be 3 characters or more"),
+        // To do add error message
+        batchNumbers: Yup.array()
+          // .of(
+          //   Yup.object().shape({
+          //     experiationDate: Yup.string().required("Invalid Date"),
+          //   })
+          // )
+          .required("You need at less 1 batch number"),
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+      }}
+      render={({ values, errors }) => (
+        <Form data-testid="product-input-form">
+          <div className="form-group">
+            <div className="row">
               <div className="col">
-                <input
-                  type="text"
-                  name="productNumber"
-                  id="productNumber"
-                  className="form-contorl"
-                  placeholder="Product Number"
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.productNumber ? (
-                  <div>{formik.errors.productNumber}</div>
-                ) : null}
+                <div className="input-group">
+                  <div className="input-group-append">
+                    <div className="input-group-text">Product Name</div>
+                  </div>
+                  <Field
+                    className="form-control"
+                    placeholder="ex. Blue Pen"
+                    name="productName"
+                    type="text"
+                    data-testid="productName"
+                  />
+                </div>
+                <ErrorMessage name="productName" />
               </div>
               <div className="col">
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  className="form-contorl"
-                  placeholder="Expire Date"
-                />
+                <div className="input-group">
+                  <div className="input-group-append">
+                    <div className="input-group-text">Product Name</div>
+                  </div>
+                  <Field
+                    className="form-control"
+                    placeholder="ex. 340302"
+                    name="productNumber"
+                    type="text"
+                    data-testid="productNumber"
+                  />
+                  <ErrorMessage name="productNumber" />
+                </div>
               </div>
             </div>
-            <div className="col">
-              <input
-                type="text"
-                name=""
-                id=""
-                className="form-contorl"
-                placeholder="Fourth Name"
-              />
+            <div className="row">
+              <div className="col">
+                <div className="input-group">
+                  <div className="input-group-append">
+                    <div className="input-group-text">Product Description </div>
+                  </div>
+                  <Field
+                    as="textarea"
+                    className="form-control"
+                    placeholder="ex. this is the best product ever"
+                    name="productDescription"
+                    type="multitext"
+                    data-testid="productDescription"
+                  />
+                  <ErrorMessage name="productDescription" />
+                </div>
+              </div>
             </div>
-            <div className="col">
-              <input
-                type="text"
-                name=""
-                id=""
-                className="form-contorl"
-                placeholder="Family Name"
-              />
+            <div className="row">
+              <div className="col">
+                <FieldArray
+                  name="batchNumbers"
+                  render={(arrayHelpers) => (
+                    <div>
+                      <ErrorMessage name="batchNumbers" />
+                      {values.batchNumbers && values.batchNumbers.length > 0 ? (
+                        <div>
+                          {values.batchNumbers.map((batchNumber, index) => (
+                            <div className="input-group" key={index}>
+                              <Field
+                                className="form-control"
+                                placeholder="Experation Date"
+                                name={`batchNumbers.${index}.experiationDate`}
+                              />
+                              {/* <ErrorMessage name={`batchNumbers`} /> */}
+                              <Field
+                                className="form-control"
+                                placeholder="Batch Number"
+                                name={`batchNumbers.${index}.batchNumber`}
+                              />
+                              <div className="input-group-append">
+                                <button
+                                  className="btn-danger"
+                                  type="button"
+                                  onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                                >
+                                  -
+                                </button>
+                              </div>
+                              {errors.batchNumbers
+                                ? errors.batchNumbers[index]
+                                : null}
+                            </div>
+                          ))}
+                          {/* change the 3 to the index or somthing else */}
+                          <button
+                            className="btn btn-success"
+                            type="button"
+                            onClick={() => arrayHelpers.insert(3, "")} // insert an empty string at a position
+                          >
+                            +
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          className="btn btn-warning btn-md"
+                          type="button"
+                          onClick={() => arrayHelpers.push({})}
+                        >
+                          {/* show this when user has removed all friends from the list */}
+                          Add a BatchNumber
+                        </button>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
             </div>
           </div>
-          <button type="submit">Save</button>
-        </div>
-      </form>
-    </div>
+          <button className="btn btn-info btn-lg" type="submit">
+            Save
+          </button>
+          {console.log(errors)}
+          {/* <ErrorMessage name="batchNumbers" /> */}
+        </Form>
+      )}
+    />
   );
 }
