@@ -1,9 +1,14 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import {
+  render,
+  waitForElement,
+  fireEvent,
+  queryByTestId,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import App from "./App";
+import BatchNumberValidator from "./Componets/BatchNumberValidator/BatchNumberValidator";
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+it("empty test", () => {
+  const { container } = render(<App />);
 });
