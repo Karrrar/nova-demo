@@ -4,6 +4,7 @@ pipeline{
     }
     stages{
         stage("Start"){
+            def nova-demo = docker.build("nova-demo:${env.BUILD_ID")
             steps{
                 echo "========executing Start========"
                 sh 'pwd'
@@ -24,7 +25,6 @@ pipeline{
         stage("Build"){
             steps{
                 echo "====++++executing Build++++===="
-                docker.build("nova-demo:${env.BUILD_ID")
                 //sh 'docker images'
                 //sh "docker build -t nova-demo:${env.BUILD_ID} ."
             }
