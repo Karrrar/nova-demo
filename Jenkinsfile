@@ -6,7 +6,7 @@ pipeline{
         stage("Start"){
             steps{
                 echo "========executing Start========"
-                sh "pwd"
+                sh 'pwd'
             }
             post{
                 always{
@@ -18,6 +18,23 @@ pipeline{
                 failure{
                     echo "========Start execution failed========"
                 }
+            }
+        }
+        stage("Build"){
+            steps{
+                echo "====++++executing Build++++===="
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Build executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Build execution failed++++===="
+                }
+        
             }
         }
     }
