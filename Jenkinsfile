@@ -24,6 +24,7 @@ pipeline{
         stage("Build"){
             steps{
                 echo "====++++executing Build++++===="
+                sh 'docker images'
                 sh "docker build -t nova-demo:${env.BUILD_ID} ."
             }
             post{
@@ -32,7 +33,6 @@ pipeline{
                 }
                 success{
                     echo "====++++Build executed successfully++++===="
-                    sh 'docker images'
                 }
                 failure{
                     echo "====++++Build execution failed++++===="
