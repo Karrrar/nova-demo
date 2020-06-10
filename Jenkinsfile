@@ -25,7 +25,7 @@ pipeline{
             steps{
                 echo "====++++executing Build++++===="
                 script {
-                    def novaimage = docker.build("nova-demo:${env.BUILD_ID")
+                    def novaimage = docker.build("nova-demo:${env.BUILD_ID}")
                 }
                 //sh 'docker images'
                 //sh "docker build -t nova-demo:${env.BUILD_ID} ."
