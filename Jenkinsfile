@@ -7,6 +7,7 @@ pipeline{
             steps{
                 echo "========executing Start========"
                 sh 'pwd'
+                sh 'ls'
             }
             post{
                 always{
