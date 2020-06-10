@@ -24,8 +24,9 @@ pipeline{
         stage("Build"){
             steps{
                 echo "====++++executing Build++++===="
-                sh 'docker images'
-                sh "docker build -t nova-demo:${env.BUILD_ID} ."
+                docker.build("nova-demo:${env.BUILD_ID")
+                //sh 'docker images'
+                //sh "docker build -t nova-demo:${env.BUILD_ID} ."
             }
             post{
                 always{
