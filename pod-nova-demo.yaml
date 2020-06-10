@@ -9,6 +9,7 @@ spec:
   containers:
     - name: nova-demo
       image: nova-demo
+      imagePullPolicy: IfNotPresent
       resources:
         limits:
           memory: "128Mi"

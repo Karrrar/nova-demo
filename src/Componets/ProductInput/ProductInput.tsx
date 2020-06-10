@@ -6,8 +6,14 @@ import {
   Form,
   ErrorMessage,
   FieldArray,
+  getIn,
 } from "formik";
 import * as Yup from "yup";
+
+const ArrayErrors = ({ errors }: any) =>
+  typeof errors.batchNumbers === "string" ? (
+    <div>{errors.batchNumbers}</div>
+  ) : null;
 
 export default function ProductInput() {
   return (
@@ -24,11 +30,11 @@ export default function ProductInput() {
           .min(3, "Product Name must be 3 characters or more"),
         // To do add error message
         batchNumbers: Yup.array()
-          // .of(
-          //   Yup.object().shape({
-          //     experiationDate: Yup.string().required("Invalid Date"),
-          //   })
-          // )
+          .of(
+            Yup.object().shape({
+              experiationDate: Yup.string().required("Invalid Date"),
+            })
+          )
           .required("You need at less 1 batch number"),
       })}
       onSubmit={(values, { setSubmitting }) => {
@@ -94,17 +100,20 @@ export default function ProductInput() {
                   name="batchNumbers"
                   render={(arrayHelpers) => (
                     <div>
-                      <ErrorMessage name="batchNumbers" />
+                      {/* <ArrayErrors name="batchNumbers" /> */}
                       {values.batchNumbers && values.batchNumbers.length > 0 ? (
                         <div>
                           {values.batchNumbers.map((batchNumber, index) => (
                             <div className="input-group" key={index}>
                               <Field
+                                data-testid="expritionDate"
                                 className="form-control"
                                 placeholder="Experation Date"
-                                name={`batchNumbers.${index}.experiationDate`}
+                                name={`batchNumbers[${index}].experiationDate`}
                               />
-                              {/* <ErrorMessage name={`batchNumbers`} /> */}
+                              <ErrorMessage
+                                name={`batchNumbers[${index}].experiationDate`}
+                              />
                               <Field
                                 className="form-control"
                                 placeholder="Batch Number"
@@ -119,9 +128,9 @@ export default function ProductInput() {
                                   -
                                 </button>
                               </div>
-                              {errors.batchNumbers
+                              {/* {typeof errors.batchNumbers === "string"
                                 ? errors.batchNumbers[index]
-                                : null}
+                                : null} */}
                             </div>
                           ))}
                           {/* change the 3 to the index or somthing else */}
@@ -135,6 +144,7 @@ export default function ProductInput() {
                         </div>
                       ) : (
                         <button
+                          data-testid="add-batchnumber-button"
                           className="btn btn-warning btn-md"
                           type="button"
                           onClick={() => arrayHelpers.push({})}
@@ -149,11 +159,10 @@ export default function ProductInput() {
               </div>
             </div>
           </div>
+          <ArrayErrors errors={errors} />
           <button className="btn btn-info btn-lg" type="submit">
             Save
           </button>
-          {console.log(errors)}
-          {/* <ErrorMessage name="batchNumbers" /> */}
         </Form>
       )}
     />

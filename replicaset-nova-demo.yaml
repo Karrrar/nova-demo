@@ -2,18 +2,19 @@ apiVersion: extensions/v1
 kind: ReplicaSet
 metadata:
   labels:
-    run: nova-demo
+    app: nova-demo
   name: nova-demo-replicaset
 spec:
   replicas: 2
   selector:
     matchLabels:
-      run: nova-demo
+      app: nova-demo
     template:
       metadata:
         labels:
-          run: nova-demo
+          app: nova-demo
       spec:
         containers:
           - image: nova-demo
             name: nova-demo
+            imagePullPolicy: IfNotPresent

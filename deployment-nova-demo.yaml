@@ -3,21 +3,22 @@ kind: Deployment
 metadata:
   name: deployment-nova-demo
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: deployment-nova-demo
+      app: nova-demo
   template:
     metadata:
       labels:
-        app: deployment-nova-demo
+        app: nova-demo
     spec:
-      replicas: 3
       containers:
-        - name: deployment-nova-demo
-          image: nova-demo
+        - name: nova-demo
+          image: nova-demo:v0.1
+          imagePullPolicy: IfNotPresent
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: 80
