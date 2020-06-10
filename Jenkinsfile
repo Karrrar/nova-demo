@@ -6,6 +6,7 @@ pipeline{
         stage("Start"){
             steps{
                 echo "========executing Start========"
+                sh "pwd"
             }
             post{
                 always{
