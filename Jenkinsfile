@@ -6,7 +6,8 @@ pipeline{
         stage("Start"){
             steps{
                 echo "========executing Start========"
-                sh 'pwd'
+                sh 'kucectl cluster-info'
+                sh 'kucectl get all --all-namespaces -o wide'
                 sh 'ls'
             }
             post{
@@ -24,9 +25,9 @@ pipeline{
         stage("Build"){
             steps{
                 echo "====++++executing Build++++===="
-                script {
-                    def novaimage = docker.build("nova-demo:${env.BUILD_ID}")
-                }
+                // script {
+                //     def novaimage = docker.build("nova-demo:${env.BUILD_ID}")
+                // }
                 //sh 'docker images'
                 //sh "docker build -t nova-demo:${env.BUILD_ID} ."
             }
